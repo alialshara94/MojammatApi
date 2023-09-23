@@ -8,14 +8,14 @@ namespace MojammatApi.Models
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public Guid id { get; set; }
 
         [MaxLength(100)]
 
-        public string Title { get; set; }
+        public string title { get; set; }
 
-        public string Description { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string description { get; set; }
+        public DateTime createdAt { get; set; } = DateTime.Now;
         public ICollection<Attachments> attachments { get; } = new List<Attachments>();
 
 

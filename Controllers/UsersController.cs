@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MojammatApi.Dto.Users;
+using MojammatApi.Interfaces;
 using MojammatApi.Models;
-using MojammatApi.Models.Dto;
-using MojammatApi.Services;
+using Twilio;
+using Twilio.Rest.Verify.V2.Service;
 
 namespace MojammatApi.Controllers
 {
@@ -13,25 +12,78 @@ namespace MojammatApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly AppDbContext context;
-        public UsersController(AppDbContext context)
+        private readonly IUserRepository userRepository;
+        private readonly IMapper mapper;
+
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            this.context = context;
+            this.userRepository = userRepository;
+            this.mapper = mapper;
+        }
+
+
+
+        [HttpPost("sendOtp", Name = "SendOtpCode")]
+       
+        public IActionResult SendOtpCode([FromForm] string to)
+        {
+            try
+            {
+                TwilioClient.Init("ACee759dd9162be8fa992986e8241201d3", "a4fb81a4e2bc904f2c29228ca66f8b7a");
+
+
+                var verification = VerificationResource.Create(
+                    to: to,
+                    channel: "sms",
+                    pathServiceSid: "VAc54ac6e8b8e541da66e995e4b7f4b834"
+                );
+                return Ok(verification);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost("verifyOtp", Name = "VerifyOtpCode")]
+
+        public IActionResult VerifyOtpCode([FromForm] string to, [FromForm] string code)
+        {
+            try
+            {
+                TwilioClient.Init("ACee759dd9162be8fa992986e8241201d3", "a4fb81a4e2bc904f2c29228ca66f8b7a");
+
+
+                var verificationCheck = VerificationCheckResource.Create(
+           to: to,
+           code: code,
+           pathServiceSid: "VAc54ac6e8b8e541da66e995e4b7f4b834"
+       );
+
+                return Ok(verificationCheck);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
         [HttpGet]
-        public IActionResult GetUsers()
+
+        public IActionResult GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize =25 )
         {
-            var users = context.users.ToList();
+            var users = mapper.Map<List<GetUserDto>>(userRepository.GetUsers(page, pageSize));
+
             return Ok(users);
         }
 
 
         [HttpGet("{id:Guid}", Name = "GetUserById")]
-        public IActionResult GetUsersById(Guid id)
+        public IActionResult GetUsersById( Guid id)
         {
-            var user = context.users.Find(id);
+            var user = mapper.Map<GetUserDto>(userRepository.GetUser(id));
 
             if (user == null)
             {
@@ -41,70 +93,43 @@ namespace MojammatApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUsers( UsersDto usersDto)
+        public IActionResult CreateUsers([FromForm] CreateUserDto createUserDto)
         {
-            Users user = new Users()
-            {
-                Fullname = usersDto.Fullname,
-                Phone = usersDto.Phone,
-                ApartmentNo = usersDto.ApartmentNo ?? "",
-                Identification = usersDto.Identification ?? "",
-                Building = usersDto.Building ?? "",
-                Floor = usersDto.Floor ?? "",
-                Role = "User",
-                Avatar = usersDto.Avatar ?? ""
 
-            };
+        
+            var users = mapper.Map<Users>(createUserDto);
 
-            context.users.Add(user);
-            context.SaveChanges();
-            return Ok(user);
+            userRepository.CreateUser(users);
+
+            return Ok("created seccessfuly");
         }
 
 
         [HttpPut("{id:Guid}", Name = "updateUsers")]
-        public IActionResult UpdateUsers(Guid id , UsersDto usersDto)
+        public IActionResult UpdateUsers(Guid id, UpdateUserDto updateUserDto)
         {
 
-            var user = context.users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            //Users user = new Users()
-            //{
-            user.Fullname = usersDto.Fullname;
-            user.Phone = usersDto.Phone;
-            user.ApartmentNo = usersDto.ApartmentNo ?? "";
-            user.Identification = usersDto.Identification ?? "";
-            user.Building = usersDto.Building ?? "";
-            user.Floor = usersDto.Floor ?? "";
-            user.Role = "User";
-            user.Avatar = usersDto.Avatar ?? "";
-
-            //};
-
-            //context.users.Add(user);
-            context.SaveChanges();
+            var user = mapper.Map<Users>(updateUserDto);
+            userRepository.UpdateUser(user);
             return Ok(user);
         }
 
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpDelete("{id:Guid}", Name = "DeleteUser")]
-        public IActionResult DeleteUser(Guid id)
-        {
-            var user = context.users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[HttpDelete("{id:Guid}", Name = "DeleteUser")]
+        //public IActionResult DeleteUser(Guid id)
+        //{
+        //    var user = context.users.Find(id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            context.users.Remove(user);
-            context.SaveChanges();
+        //    context.users.Remove(user);
+        //    context.SaveChanges();
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
     }
 }

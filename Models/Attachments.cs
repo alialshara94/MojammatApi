@@ -8,18 +8,18 @@ namespace MojammatApi.Models
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public Guid id { get; set; }
 
-        public string Url { get; set; }
+        public string url { get; set; }
 
-        public bool Status { get; set; }
+        public bool status { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime createdAt { get; set; } = DateTime.Now;
 
-        //public Guid AppSettingId { get; set; } // Required foreign key property
 
-        public AppSetting appSetting { get; set; } = null!; // Required reference navigation to principal
-
+        public AppSetting appSetting { get; set; } 
+        [ForeignKey("users")]
+        public Guid appSettingId { get; set; }
     }
 }
 

@@ -21,6 +21,16 @@ namespace MojammatApi.Services
 
         public DbSet<AppSetting> appSettings { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Users>()
+                .HasIndex(u => u.phone)
+                .IsUnique();
+
+        }
+
 
 
     }

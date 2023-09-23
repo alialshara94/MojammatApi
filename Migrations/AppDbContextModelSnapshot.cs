@@ -21,47 +21,47 @@ namespace MojammatApi.Migrations
 
             modelBuilder.Entity("MojammatApi.Models.AppSetting", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("createdAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("appSettings");
                 });
 
             modelBuilder.Entity("MojammatApi.Models.Attachments", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<Guid>("appSettingId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
 
                     b.HasIndex("appSettingId");
 
@@ -70,174 +70,177 @@ namespace MojammatApi.Migrations
 
             modelBuilder.Entity("MojammatApi.Models.Invoices", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("createdAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateOnly>("date")
                         .HasColumnType("date");
 
-                    b.Property<bool>("IsPaid")
+                    b.Property<bool>("isPaid")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Number")
+                    b.Property<string>("number")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("price")
                         .HasPrecision(16, 2)
                         .HasColumnType("decimal(16,2)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("status")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid>("usersId")
+                    b.Property<Guid>("userId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("usersId");
+                    b.HasIndex("userId");
 
                     b.ToTable("invoices");
                 });
 
             modelBuilder.Entity("MojammatApi.Models.RequestedServices", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("createdAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateOnly>("date")
                         .HasColumnType("date");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("type")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid>("usersId")
+                    b.Property<Guid>("userId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("usersId");
+                    b.HasIndex("userId");
 
                     b.ToTable("services");
                 });
 
             modelBuilder.Entity("MojammatApi.Models.Users", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("ApartmentNo")
+                    b.Property<string>("apartmentNo")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Avatar")
+                    b.Property<string>("avatar")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Building")
+                    b.Property<string>("building")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("createdAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Floor")
+                    b.Property<string>("floor")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Fullname")
+                    b.Property<string>("fullname")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Identification")
+                    b.Property<string>("identification")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("phone")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Role")
+                    b.Property<string>("role")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("status")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
+
+                    b.HasIndex("phone")
+                        .IsUnique();
 
                     b.ToTable("users");
                 });
 
             modelBuilder.Entity("MojammatApi.Models.Visitor", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("createdAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateOnly>("InDate")
-                        .HasColumnType("date");
-
-                    b.Property<TimeOnly>("InTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<DateOnly>("OutDate")
-                        .HasColumnType("date");
-
-                    b.Property<TimeOnly>("OutTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("VFullname")
+                    b.Property<string>("fullname")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid>("usersId")
+                    b.Property<DateOnly>("inDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("inTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<DateOnly>("outDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("outTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("userId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("usersId");
+                    b.HasIndex("userId");
 
                     b.ToTable("visitors");
                 });
@@ -257,7 +260,7 @@ namespace MojammatApi.Migrations
                 {
                     b.HasOne("MojammatApi.Models.Users", "users")
                         .WithMany("invoices")
-                        .HasForeignKey("usersId")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -268,7 +271,7 @@ namespace MojammatApi.Migrations
                 {
                     b.HasOne("MojammatApi.Models.Users", "users")
                         .WithMany("services")
-                        .HasForeignKey("usersId")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -279,7 +282,7 @@ namespace MojammatApi.Migrations
                 {
                     b.HasOne("MojammatApi.Models.Users", "users")
                         .WithMany("visitors")
-                        .HasForeignKey("usersId")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -7,29 +7,29 @@ namespace MojammatApi.Models
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public Guid id { get; set; }
 
         [MaxLength(100)]
-        public string Title { get; set; }
-
-        [MaxLength(100)]
-
-        public string Description { get; set; }
+        public string title { get; set; }
 
         [MaxLength(100)]
 
-        public string Type { get; set; }
+        public string description { get; set; }
+
+        [MaxLength(100)]
+
+        public string type { get; set; }
 
 
 
-        public DateOnly Date { get; set; }
+        public DateOnly date { get; set; }
 
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime createdAt { get; set; } = DateTime.Now;
 
-        //public Guid UserId { get; set; } // Required foreign key property
-
-        public Users   users { get; set; } = null!; // Required reference navigation to principal
+        public Users users { get; set; }
+        [ForeignKey("users")]
+        public Guid userId { get; set; }
     }
 }
 

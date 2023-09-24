@@ -39,6 +39,7 @@
     <None Remove="Dto\" />
     <None Remove="Migrations\" />
     <None Remove="Dto\Visitors\" />
+    <None Remove="Dto\RequestedService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -50,5 +51,6 @@
     <Folder Include="Dto\" />
     <Folder Include="Migrations\" />
     <Folder Include="Dto\Visitors\" />
+    <Folder Include="Dto\RequestedService\" />
   </ItemGroup>
 </Project>

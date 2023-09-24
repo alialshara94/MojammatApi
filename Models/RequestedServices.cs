@@ -26,7 +26,7 @@ namespace MojammatApi.Models
 
 
         public DateTime createdAt { get; set; } = DateTime.Now;
-
+        public bool status { get; set; } = true;
         public Users users { get; set; }
         [ForeignKey("users")]
         public Guid userId { get; set; }

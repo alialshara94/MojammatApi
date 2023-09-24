@@ -17,7 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
-
+builder.Services.AddScoped<IRequestedServiceRepository, RequestedServiceRepository>();
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using MojammatApi.Dto.RequestedService;
 using MojammatApi.Dto.Users;
 using MojammatApi.Dto.Visitors;
 using MojammatApi.Models;
@@ -22,6 +23,13 @@ namespace MojammatApi.Helper
             CreateMap<Visitor, GetVisitorDto>();
 			CreateMap<CreateVisitorDto, Visitor>();
             CreateMap<UpdateVisitorDto, Visitor>();
+
+
+
+            //Services Mapping block
+
+            CreateMap<RequestedServices, GetRequestedServiceDto>();
+            CreateMap<CreateRequestedServiceDto, RequestedServices>();
         }
 
 		

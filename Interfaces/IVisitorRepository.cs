@@ -5,11 +5,11 @@ namespace MojammatApi.Interfaces
 {
 	public interface IVisitorRepository
 	{
-        ICollection<Users> GetVisitor(int page, int pageSize, string search);
-        Users GetVisitor(Guid id);
+        ICollection<Visitor> GetVisitors(int page, int pageSize, string search);
+        Visitor GetVisitor(Guid id);
         bool CreateVisitor(Visitor visitor);
-        bool UpdateVisitor(Visitor visitor);
-        bool DeleteUser(Guid id);
+        bool UpdateVisitor(Visitor visitor, Guid id);
+        bool DeleteVisitor(Guid id);
     }
 }
 

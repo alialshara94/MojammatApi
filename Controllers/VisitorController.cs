@@ -1,9 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using MojammatApi.Dto;
+using MojammatApi.Dto.Visitors;
+using MojammatApi.Interfaces;
 using MojammatApi.Models;
 using MojammatApi.Services;
-using System.Xml.Linq;
-using MojammatApi.Dto;
 
 namespace MojammatApi.Controllers
 {
@@ -11,109 +13,118 @@ namespace MojammatApi.Controllers
     [ApiController]
     public class VisitorController : ControllerBase
         {
-            private readonly AppDbContext context;
-            public VisitorController(AppDbContext context)
+
+        private readonly AppDbContext _appDbContext;
+       
+        private readonly IVisitorRepository visitorRepository;
+        private readonly IMapper mapper;
+
+        public VisitorController(IVisitorRepository visitorRepository, IMapper mapper, AppDbContext appDbContext)
+        {
+            this.visitorRepository = visitorRepository;
+            this.mapper = mapper;
+            this._appDbContext = appDbContext;
+        }
+
+
+
+        [HttpGet]
+
+        public IActionResult GetVisitors([FromQuery] string? search,[FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        {
+            var visitor = mapper.Map<List<GetVisitorDto>>(visitorRepository.GetVisitors(page, pageSize,search));
+
+            return Ok(visitor);
+        }
+
+
+        [HttpGet("{id:Guid}", Name = "GetVisitorById")]
+        public IActionResult GetVisitorById(Guid id)
+        {
+            var visitor = mapper.Map<GetVisitorDto>(visitorRepository.GetVisitor(id));
+
+            if (visitor == null)
             {
-                this.context = context;
+                return NotFound();
+            }
+            return Ok(visitor);
+        }
+
+        [HttpPost]
+        public IActionResult CreateVisitor([FromForm] CreateVisitorDto createVisitorDto)
+        {
+
+
+            var visitor = mapper.Map<Visitor>(createVisitorDto);
+
+            visitorRepository.CreateVisitor(visitor);
+
+            return Ok("created visitor seccessfuly");
+        }
+
+
+        [HttpPatch("{id:Guid}",Name = "updateVisitor")]
+        public IActionResult UpdateUsers(Guid id, [FromBody] JsonPatchDocument<UpdateVisitorDto> patchDoc)
+        {
+
+            //var visitors = mapper.Map<Visitor>(updateVisitorDto);
+
+
+            //if (visitorRepository.UpdateVisitor(updateVisitorDto, id))
+            //{
+            //    return Ok();
+            //}
+            //return NotFound();
+
+            if (patchDoc == null)
+            {
+                return BadRequest();
             }
 
+            var visitorFromDb = _appDbContext.visitors.FirstOrDefault(v => v.id == id);
 
-        //    [HttpGet]
-        //    public IActionResult GetVisitors()
-        //    {
-        //        var visitors = context.visitors.ToList();
-        //    Console.WriteLine("================");
-        //    Console.WriteLine(visitors[0].users);
-        //        return Ok(visitors);
-        //    }
+            if (visitorFromDb == null)
+            {
+                return NotFound();
+            }
 
+            var visitorToPatch = new UpdateVisitorDto
+            {
+                fullname = visitorFromDb.fullname,
+                inDate = visitorFromDb.inDate,
+                inTime = visitorFromDb.inTime,
+                outDate = visitorFromDb.outDate,
+                outTime = visitorFromDb.outTime,
+                status = visitorFromDb.status,
+                userId = visitorFromDb.userId
+            };
 
-        //    [HttpGet("{id:Guid}", Name = "GetvisitorById")]
-        //    public IActionResult GetvisitorsById(Guid id)
-        //    {
-        //        var visitor = context.visitors.Find(id);
+            patchDoc.ApplyTo(visitorToPatch);
 
-        //        if (visitor == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return Ok(visitor);
-        //    }
+            // Map the patched object to the original visitor entity
+            visitorFromDb.fullname = visitorToPatch.fullname;
+            visitorFromDb.inDate = visitorToPatch.inDate;
+            visitorFromDb.inTime = visitorToPatch.inTime;
+            visitorFromDb.outDate = visitorToPatch.outDate;
+            visitorFromDb.outTime = visitorToPatch.outTime;
+            visitorFromDb.status = visitorToPatch.status;
+            visitorFromDb.userId = visitorToPatch.userId;
 
-        //    [HttpPost]
-        //    public IActionResult Createvisitors([FromBody]  VisitorDto visitorDto)
-        //    {
+            _appDbContext.SaveChanges();
 
-        //    var user = context.users.Find(visitorDto.userId);
-        //    if (user == null)
-        //    {
-        //        return BadRequest("Invalid User Id");
-        //    }
-
-        //    Visitor visitors = new Visitor()
-        //        {
-        //            VFullname = visitorDto.VFullname,
-        //            InDate = visitorDto.InDate,
-        //            InTime = visitorDto.InTime ,
-        //            OutDate = visitorDto.OutDate ,
-        //            OutTime = visitorDto.OutTime,
-        //            Status = visitorDto.Status ,
-
-        //            users = user
-        //        };
-
-        //        context.visitors.Add(visitors);
-        //        context.SaveChanges();
-        //        return Ok(visitors);
-        //    }
-
-
-        //    [HttpPut("{id:Guid}", Name = "updatevisitors")]
-        //public IActionResult UpdateVisitor(Guid id, [FromBody] VisitorDto visitorDto)
-        //{
-        //    var existingVisitor = context.visitors.Find(id);
-
-        //    if (existingVisitor == null)
-        //    {
-        //        return NotFound("Visitor not found");
-        //    }
-
-        //    var user = context.users.Find(visitorDto.userId);
-        //    if (user == null)
-        //    {
-        //        return BadRequest("Invalid User Id");
-        //    }
-
-        //    // Update the properties of the existing visitor
-        //    existingVisitor.VFullname = visitorDto.VFullname;
-        //    existingVisitor.InDate = visitorDto.InDate;
-        //    existingVisitor.InTime = visitorDto.InTime;
-        //    existingVisitor.OutDate = visitorDto.OutDate;
-        //    existingVisitor.OutTime = visitorDto.OutTime;
-        //    existingVisitor.Status = visitorDto.Status;
-        //    existingVisitor.users = user;
-
-        //    context.SaveChanges();
-
-        //    return Ok(existingVisitor);
-        //}
+            return NoContent();
+        }
 
         //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //    [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //    [HttpDelete("{id:Guid}", Name = "Deletevisitors")]
-        //public IActionResult DeleteVisitor(Guid id)
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[HttpDelete("{id:Guid}", Name = "DeleteUser")]
+        //public IActionResult DeleteUser(Guid id)
         //{
-        //    var existingVisitor = context.visitors.Find(id);
+        //    var user = userRepository.DeleteUser(id);
+        //    Console.WriteLine(user);
 
-        //    if (existingVisitor == null)
-        //    {
-        //        return NotFound("Visitor not found");
-        //    }
-
-        //    context.visitors.Remove(existingVisitor);
-        //    context.SaveChanges();
-
-        //    return NoContent(); // 204 No Content is a common response for successful DELETE requests
+        //    return Ok();
         //}
     }
     

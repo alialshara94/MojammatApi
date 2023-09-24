@@ -5,6 +5,7 @@ namespace MojammatApi.Dto.Users
 {
 	public class UpdateUserDto
 	{
+
         [Required, MaxLength(100)]
 
         public string fullname { get; set; }

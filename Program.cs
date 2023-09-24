@@ -1,9 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
 using MojammatApi.Interfaces;
-using MojammatApi.Models;
 using MojammatApi.Repositories;
 using MojammatApi.Services;
 
@@ -19,6 +16,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 21)))
 );
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
+
+
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

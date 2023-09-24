@@ -105,8 +105,8 @@ namespace MojammatApi.Controllers
         }
 
 
-        [HttpPut("{id:Guid}", Name = "updateUsers")]
-        public IActionResult UpdateUsers(Guid id, UpdateUserDto updateUserDto)
+        [HttpPut( Name = "updateUsers")]
+        public IActionResult UpdateUsers(UpdateUserDto updateUserDto)
         {
 
             var user = mapper.Map<Users>(updateUserDto);
@@ -114,22 +114,16 @@ namespace MojammatApi.Controllers
             return Ok(user);
         }
 
-        //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[HttpDelete("{id:Guid}", Name = "DeleteUser")]
-        //public IActionResult DeleteUser(Guid id)
-        //{
-        //    var user = context.users.Find(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpDelete("{id:Guid}", Name = "DeleteUser")]
+        public IActionResult DeleteUser(Guid id)
+        {
+            var user = userRepository.DeleteUser(id);
+            Console.WriteLine(user);
 
-        //    context.users.Remove(user);
-        //    context.SaveChanges();
-
-        //    return Ok();
-        //}
+            return Ok();
+        }
     }
 }

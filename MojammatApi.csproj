@@ -38,6 +38,7 @@
     <None Remove="Interfaces\" />
     <None Remove="Dto\" />
     <None Remove="Migrations\" />
+    <None Remove="Dto\Visitors\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -48,5 +49,6 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Dto\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Dto\Visitors\" />
   </ItemGroup>
 </Project>

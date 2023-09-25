@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using MojammatApi.Dto.Invoices;
 using MojammatApi.Dto.RequestedService;
 using MojammatApi.Dto.Users;
 using MojammatApi.Dto.Visitors;
@@ -30,9 +31,19 @@ namespace MojammatApi.Helper
 
             CreateMap<RequestedServices, GetRequestedServiceDto>();
             CreateMap<CreateRequestedServiceDto, RequestedServices>();
+            CreateMap<UpdateRequestedSreviceDto, RequestedServices>();
+
+            //Invoice Mapping block
+
+            CreateMap<Invoices, GetInvoiceDto>();
+            CreateMap<CreateInvoiceDto, Invoices>();
+            CreateMap<UpdateInvoiceDto, Invoices>();
+
+
+
         }
 
-		
-	}
+
+    }
 }
 

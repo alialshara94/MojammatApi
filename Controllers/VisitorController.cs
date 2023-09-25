@@ -1,13 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MojammatApi.Dto;
-using MojammatApi.Dto.Users;
 using MojammatApi.Dto.Visitors;
 using MojammatApi.Interfaces;
 using MojammatApi.Models;
 using MojammatApi.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace MojammatApi.Controllers
 {
@@ -82,14 +79,14 @@ namespace MojammatApi.Controllers
         //[ProducesResponseType(StatusCodes.Status204NoContent)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
         //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[HttpDelete("{id:Guid}", Name = "DeleteUser")]
-        //public IActionResult DeleteUser(Guid id)
-        //{
-        //    var user = userRepository.DeleteUser(id);
-        //    Console.WriteLine(user);
+        [HttpDelete("{id:Guid}", Name = "DeleteVisitor")]
+        public IActionResult DeleteService(Guid id)
+        {
+            var visitor = visitorRepository.DeleteVisitor(id);
+            //Console.WriteLine(user);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
     }
     
 }

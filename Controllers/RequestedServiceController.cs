@@ -4,6 +4,8 @@ using MojammatApi.Dto.RequestedService;
 using MojammatApi.Dto.Visitors;
 using MojammatApi.Interfaces;
 using MojammatApi.Models;
+using MojammatApi.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace MojammatApi.Controllers
 {
@@ -40,6 +42,55 @@ namespace MojammatApi.Controllers
             requestedServiceRepository.CreateService(service);
 
             return Ok("created service seccessfuly");
+        }
+
+
+        [HttpGet("{id:Guid}",Name = "GetServiceById")]
+        public IActionResult GetServiceById(Guid id)
+        {
+            var service = mapper.Map<GetRequestedServiceDto>(requestedServiceRepository.GetService(id));
+
+            if (service == null)
+            {
+                return NotFound();
+            }
+            return Ok(service);
+        }
+
+
+        [HttpGet("/byUser/{userId:Guid}", Name = "GetServiceByUserId")]
+        public IActionResult GetServiceByUserId(Guid userId)
+        {
+            var service = requestedServiceRepository.GetServiceByUser(userId);
+
+            if (service == null)
+            {
+                return NotFound();
+            }
+            return Ok(service);
+        }
+
+        [HttpPut(Name = "updateService")]
+        public IActionResult UpdateService([FromBody] UpdateRequestedSreviceDto updateRequestedSreviceDto, [FromQuery, Required] Guid serviceId)
+        {
+            var res = requestedServiceRepository.UpdateService(updateRequestedSreviceDto, serviceId);
+            if (res)
+            {
+                return Ok("updated Successfully");
+            }
+            else
+            {
+                return NotFound("The Service is Not Found");
+            }
+        }
+
+        [HttpDelete("{id:Guid}", Name = "DeleteService")]
+        public IActionResult DeleteService(Guid id)
+        {
+            var visitor = requestedServiceRepository.DeleteService(id);
+            //Console.WriteLine(user);
+
+            return Ok();
         }
 
     }

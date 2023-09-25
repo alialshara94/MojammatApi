@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using MojammatApi.Dto.RequestedService;
+using MojammatApi.Dto.Visitors;
 using MojammatApi.Interfaces;
 using MojammatApi.Models;
 using MojammatApi.Services;
@@ -55,9 +57,27 @@ namespace MojammatApi.Repositories
             return query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
-        public bool UpdateService(RequestedServices requestedServices, Guid id)
+        public bool UpdateService(UpdateRequestedSreviceDto updateRequestedSreviceDto, Guid id)
         {
-            throw new NotImplementedException();
+            bool isExist = appDbContext.services.Any(v => v.id == id);
+
+            if (isExist)
+            {
+                RequestedServices oldServices = appDbContext.services.Where(v => v.id == id).First();
+
+                oldServices.title = updateRequestedSreviceDto.title != string.Empty ? updateRequestedSreviceDto.title! : oldServices.title;
+                oldServices.description = updateRequestedSreviceDto.description != string.Empty ? updateRequestedSreviceDto.description! : oldServices.description;
+                oldServices.type = updateRequestedSreviceDto.type != string.Empty ? updateRequestedSreviceDto.type! : oldServices.type;
+                oldServices.date = updateRequestedSreviceDto.date != string.Empty ? DateOnly.Parse(updateRequestedSreviceDto.date!) : oldServices.date;
+                oldServices.status = updateRequestedSreviceDto.status != string.Empty ? bool.Parse(updateRequestedSreviceDto.status!) : oldServices.status;
+                oldServices.userId = updateRequestedSreviceDto.userId != string.Empty ? Guid.Parse(updateRequestedSreviceDto.userId!) : oldServices.userId;
+                appDbContext.Update(oldServices);
+                return appDbContext.SaveChanges() > 0;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

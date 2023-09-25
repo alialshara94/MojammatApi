@@ -1,4 +1,5 @@
 ﻿using System;
+using MojammatApi.Dto.RequestedService;
 using MojammatApi.Models;
 
 namespace MojammatApi.Interfaces
@@ -9,7 +10,7 @@ namespace MojammatApi.Interfaces
         RequestedServices GetService(Guid id);
         IEnumerable<RequestedServices> GetServiceByUser(Guid id);
         bool CreateService(RequestedServices requestedServices);
-        bool UpdateService(RequestedServices requestedServices, Guid id);
+        bool UpdateService(UpdateRequestedSreviceDto updateRequestedSreviceDto, Guid id);
         bool DeleteService(Guid id);
     }
 }

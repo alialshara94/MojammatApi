@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MojammatApi.Dto;
+using MojammatApi.Dto.Users;
 using MojammatApi.Dto.Visitors;
 using MojammatApi.Interfaces;
 using MojammatApi.Models;
@@ -63,56 +65,18 @@ namespace MojammatApi.Controllers
         }
 
 
-        [HttpPatch("{id:Guid}",Name = "updateVisitor")]
-        public IActionResult UpdateUsers(Guid id, [FromBody] JsonPatchDocument<UpdateVisitorDto> patchDoc)
+        [HttpPut(Name = "updateVisitor")]
+        public IActionResult UpdateVisitor([FromBody] UpdateVisitorDto updateVisitorDto, [FromQuery, Required] Guid visitorId)
         {
-
-            //var visitors = mapper.Map<Visitor>(updateVisitorDto);
-
-
-            //if (visitorRepository.UpdateVisitor(updateVisitorDto, id))
-            //{
-            //    return Ok();
-            //}
-            //return NotFound();
-
-            if (patchDoc == null)
+            var res = visitorRepository.UpdateVisitor(updateVisitorDto, visitorId);
+            if (res)
             {
-                return BadRequest();
+                return Ok("updated Successfully");
             }
-
-            var visitorFromDb = _appDbContext.visitors.FirstOrDefault(v => v.id == id);
-
-            if (visitorFromDb == null)
+            else
             {
-                return NotFound();
+                return NotFound("The visitor is Not Found");
             }
-
-            var visitorToPatch = new UpdateVisitorDto
-            {
-                fullname = visitorFromDb.fullname,
-                inDate = visitorFromDb.inDate,
-                inTime = visitorFromDb.inTime,
-                outDate = visitorFromDb.outDate,
-                outTime = visitorFromDb.outTime,
-                status = visitorFromDb.status,
-                userId = visitorFromDb.userId
-            };
-
-            patchDoc.ApplyTo(visitorToPatch);
-
-            // Map the patched object to the original visitor entity
-            visitorFromDb.fullname = visitorToPatch.fullname;
-            visitorFromDb.inDate = visitorToPatch.inDate;
-            visitorFromDb.inTime = visitorToPatch.inTime;
-            visitorFromDb.outDate = visitorToPatch.outDate;
-            visitorFromDb.outTime = visitorToPatch.outTime;
-            visitorFromDb.status = visitorToPatch.status;
-            visitorFromDb.userId = visitorToPatch.userId;
-
-            _appDbContext.SaveChanges();
-
-            return NoContent();
         }
 
         //[ProducesResponseType(StatusCodes.Status204NoContent)]

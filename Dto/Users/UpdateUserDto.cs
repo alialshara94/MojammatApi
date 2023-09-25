@@ -1,43 +1,39 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace MojammatApi.Dto.Users
+﻿namespace MojammatApi.Dto.Users
 {
 	public class UpdateUserDto
 	{
+        private string? _status = string.Empty;
 
-        [Required, MaxLength(100)]
+        public string? fullname { get; set; } = string.Empty;
 
-        public string fullname { get; set; }
+        public string? phone { get; set; } = string.Empty;
 
-        [MaxLength(100)]
-        [Required]
-        public string phone { get; set; }
+        public string? apartmentNo { get; set; } = string.Empty;
 
-        [MaxLength(100)]
+        public string? identification { get; set; } = string.Empty;
 
-        public string? apartmentNo { get; set; }
+        public string? building { get; set; } = string.Empty;
 
-        [MaxLength(100)]
+        public string? floor { get; set; } = string.Empty;
 
-        public string? identification { get; set; }
+        public string? role { get; set; } = string.Empty;
 
-        [MaxLength(100)]
+        public string? status {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                if (value is not null && !bool.TryParse(value, out _))
+                {
+                    throw new ArgumentException("The status value must be 'true' or 'false'.");
+                }
+                _status = value;
+            }
+        }
 
-        public string? building { get; set; }
-
-        [MaxLength(100)]
-
-        public string? floor { get; set; }
-
-        [Required, MaxLength(100)]
-        //[JsonConverter(typeof(JsonStringEnumConverter))]
-        public string role { get; set; }
-
-
-        public bool status { get; set; }
-
-        public string? avatar { get; set; }
+        //public string avatar { get; set; } = string.Empty;
     }
 }
 

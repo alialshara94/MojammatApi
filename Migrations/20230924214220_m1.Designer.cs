@@ -11,8 +11,8 @@ using MojammatApi.Services;
 namespace MojammatApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230922132840_initMigration")]
-    partial class initMigration
+    [Migration("20230924214220_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

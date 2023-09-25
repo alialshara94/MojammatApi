@@ -1,4 +1,7 @@
-﻿using MojammatApi.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using MojammatApi.Dto;
+using MojammatApi.Dto.Visitors;
 using MojammatApi.Interfaces;
 using MojammatApi.Models;
 using MojammatApi.Services;
@@ -55,28 +58,27 @@ namespace MojammatApi.Repositories
             return appDbContext.visitors.Where(u => u.id == id).FirstOrDefault();
         }
 
-        public bool UpdateVisitor(Visitor visitorInfo, Guid id)
+        public bool UpdateVisitor(UpdateVisitorDto updateVisitorDto, Guid id)
         {
+            bool isExist = appDbContext.visitors.Any(v => v.id == id);
 
+            if (isExist) {
+                Visitor oldVisitor = appDbContext.visitors.Where(v => v.id == id).First();
 
-            var visitor = appDbContext.visitors.Where(u => u.id == id).FirstOrDefault();
-            if (visitor == null)
+                oldVisitor.fullname = updateVisitorDto.fullname != string.Empty ? updateVisitorDto.fullname! : oldVisitor.fullname;
+                oldVisitor.inDate = updateVisitorDto.inDate != string.Empty ? DateOnly.Parse(updateVisitorDto.inDate!) : oldVisitor.inDate;
+                oldVisitor.inTime = updateVisitorDto.inTime != string.Empty ? TimeOnly.Parse(updateVisitorDto.inTime!) : oldVisitor.inTime;
+                oldVisitor.outDate = updateVisitorDto.outDate != string.Empty ? DateOnly.Parse(updateVisitorDto.outDate!) : oldVisitor.outDate;
+                oldVisitor.outTime = updateVisitorDto.outTime != string.Empty ? TimeOnly.Parse(updateVisitorDto.outTime!) : oldVisitor.outTime;
+                oldVisitor.status = updateVisitorDto.status != string.Empty ? bool.Parse(updateVisitorDto.status!) : oldVisitor.status;
+                oldVisitor.userId = updateVisitorDto.userId != string.Empty ? Guid.Parse(updateVisitorDto.userId!) : oldVisitor.userId;
+                appDbContext.Update(oldVisitor);
+                return appDbContext.SaveChanges() > 0;
+            } else
             {
                 return false;
             }
-
-            //visitor.fullname = visitorInfo.fullname;
-            //visitor.inDate = visitorInfo.inDate;
-            //visitor.inTime = visitorInfo.inTime;
-            //visitor.outDate = visitorInfo.outDate;
-            //visitor.outTime = visitorInfo.outTime;
-            //visitor.status = visitorInfo.status;
-            //visitor.userId = visitorInfo.userId;
-
-            //appDbContext.visitors.Update(visitor);
-            return appDbContext.SaveChanges() > 0;
         }
 
     }
 }
-

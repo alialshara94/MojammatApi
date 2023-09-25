@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MojammatApi.Dto.Users;
@@ -106,12 +107,15 @@ namespace MojammatApi.Controllers
 
 
         [HttpPut( Name = "updateUsers")]
-        public IActionResult UpdateUsers(UpdateUserDto updateUserDto)
+        public IActionResult UpdateUsers([FromBody] UpdateUserDto updateUserDto, [FromQuery, Required] Guid userId)
         {
-
-            var user = mapper.Map<Users>(updateUserDto);
-            userRepository.UpdateUser(user);
-            return Ok(user);
+            var res = userRepository.UpdateUser(updateUserDto, userId);
+            if (res)
+            {
+                return Ok("updated Successfully");
+            } else {
+                return NotFound("The User is Not Found");
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]

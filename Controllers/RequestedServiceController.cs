@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MojammatApi.Dto.RequestedService;
 using MojammatApi.Dto.Visitors;
@@ -11,6 +12,7 @@ namespace MojammatApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RequestedServiceController : ControllerBase
     {
         private readonly IRequestedServiceRepository requestedServiceRepository;

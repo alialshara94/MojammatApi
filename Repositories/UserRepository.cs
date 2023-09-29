@@ -16,6 +16,19 @@ namespace MojammatApi.Repositories
             this.appDbContext = appDbContext;
         }
 
+        public (bool, Users) CheckUserIsExsit(string phone)
+        {
+            var user =  appDbContext.users.Where(u=>u.phone == phone).FirstOrDefault();
+            if (user != null)
+            {
+                return (true , user);
+            }
+            else
+            {
+                return (false, null);
+            }
+        }
+
         public bool CreateUser(Users user)
         {
             appDbContext.Add(user);

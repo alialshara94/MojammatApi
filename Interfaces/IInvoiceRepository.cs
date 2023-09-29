@@ -7,6 +7,8 @@ namespace MojammatApi.Interfaces
     {
         ICollection<Invoices> GetInvoices(int page, int pageSize, string search);
         Invoices GetInvoice(Guid id);
+
+        IEnumerable< Invoices> GetInvoiceByUserId(Guid userId);
         bool CreateInvoice(Invoices invoices);
         bool UpdateInvoice(UpdateInvoiceDto updateInvoiceDto, Guid id);
         bool DeleteInvoice(Guid id);

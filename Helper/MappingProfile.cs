@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using MojammatApi.Dto.Invoices;
+using MojammatApi.Dto.Notification;
 using MojammatApi.Dto.RequestedService;
 using MojammatApi.Dto.Users;
 using MojammatApi.Dto.Visitors;
@@ -39,7 +40,9 @@ namespace MojammatApi.Helper
             CreateMap<CreateInvoiceDto, Invoices>();
             CreateMap<UpdateInvoiceDto, Invoices>();
 
-
+            //Notification Mapping block
+            CreateMap<PushNotifications, GetNotificationDto>();
+            CreateMap<CreateNotificationDto,PushNotifications>();
 
         }
 

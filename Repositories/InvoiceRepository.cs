@@ -35,6 +35,11 @@ namespace MojammatApi.Repositories
             return appDbContext.invoices.Where(u => u.id == id).FirstOrDefault();
         }
 
+        public IEnumerable<Invoices> GetInvoiceByUserId(Guid userId)
+        {
+            return appDbContext.invoices.Where(s => s.userId == userId).ToList();
+        }
+
         public ICollection<Invoices> GetInvoices(int page, int pageSize, string search)
         {
             IQueryable<Invoices> query = appDbContext.invoices;

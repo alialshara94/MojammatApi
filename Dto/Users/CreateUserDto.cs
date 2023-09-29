@@ -40,7 +40,7 @@ namespace MojammatApi.Dto.Users
 
         public bool status { get; set; }
 
-        public string? avatar { get; set; }
+        public IFormFile image { get; set; }
     }
 }
 

@@ -21,6 +21,8 @@ namespace MojammatApi.Services
 
         public DbSet<AppSetting> appSettings { get; set; }
 
+        public DbSet<PushNotifications> notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

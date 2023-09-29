@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MojammatApi.Dto.Visitors;
 using MojammatApi.Interfaces;
@@ -10,6 +11,7 @@ namespace MojammatApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VisitorController : ControllerBase
         {
 

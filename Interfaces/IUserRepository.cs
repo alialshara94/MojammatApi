@@ -11,6 +11,8 @@ namespace MojammatApi.Interfaces
 		bool CreateUser(Users user);
 		bool UpdateUser( UpdateUserDto updateUserDto, Guid id);
 		bool DeleteUser(Guid id);
+
+		(bool, Users) CheckUserIsExsit(string phone);
 	}
 }
 

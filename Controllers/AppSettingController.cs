@@ -10,7 +10,7 @@ namespace MojammatApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AppSettingController : ControllerBase
     {
         private readonly IAppSettingRepository appSettingRepository;

@@ -11,7 +11,7 @@ namespace MojammatApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class VisitorController : ControllerBase
         {
 

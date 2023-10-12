@@ -11,7 +11,7 @@ using MojammatApi.Services;
 namespace MojammatApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230924214220_m1")]
+    [Migration("20231010201937_m1")]
     partial class m1
     {
         /// <inheritdoc />
@@ -113,6 +113,32 @@ namespace MojammatApi.Migrations
                     b.ToTable("invoices");
                 });
 
+            modelBuilder.Entity("MojammatApi.Models.PushNotifications", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("notifications");
+                });
+
             modelBuilder.Entity("MojammatApi.Models.RequestedServices", b =>
                 {
                     b.Property<Guid>("id")
@@ -129,6 +155,9 @@ namespace MojammatApi.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("title")
                         .IsRequired()

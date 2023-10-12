@@ -32,6 +32,24 @@ namespace MojammatApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "notifications",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    title = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_notifications", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -125,6 +143,7 @@ namespace MojammatApi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     date = table.Column<DateOnly>(type: "date", nullable: false),
                     createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    status = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     userId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
@@ -201,6 +220,9 @@ namespace MojammatApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "invoices");
+
+            migrationBuilder.DropTable(
+                name: "notifications");
 
             migrationBuilder.DropTable(
                 name: "services");

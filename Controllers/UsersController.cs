@@ -38,15 +38,15 @@ namespace MojammatApi.Controllers
         {
             try
             {
-                TwilioClient.Init("ACee759dd9162be8fa992986e8241201d3", "a4fb81a4e2bc904f2c29228ca66f8b7a");
+                //TwilioClient.Init("ACee759dd9162be8fa992986e8241201d3", "a4fb81a4e2bc904f2c29228ca66f8b7a");
 
 
-                var verification = VerificationResource.Create(
-                    to: to,
-                    channel: "sms",
-                    pathServiceSid: "VAc54ac6e8b8e541da66e995e4b7f4b834"
-                );
-                return Ok(verification);
+                //var verification = VerificationResource.Create(
+                //    to: to,
+                //    channel: "sms",
+                //    pathServiceSid: "VAc54ac6e8b8e541da66e995e4b7f4b834"
+                //);
+                return Ok(to);
             }
             catch (Exception ex)
             {
@@ -70,8 +70,8 @@ namespace MojammatApi.Controllers
        //    pathServiceSid: "VAc54ac6e8b8e541da66e995e4b7f4b834"
        //);
 
-                if (true)
-                {
+                //if (true)
+                //{
 
 
                     (bool status, Users user) res = userRepository.CheckUserIsExsit(to);
@@ -97,10 +97,10 @@ namespace MojammatApi.Controllers
                         });
                     }
 
-                }else
-                {
-                    return BadRequest();
-                }
+                //}else
+                //{
+                //    return BadRequest();
+                //}
 
 
                 }
@@ -112,7 +112,7 @@ namespace MojammatApi.Controllers
 
 
 
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         [HttpGet]
 
         public IActionResult GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize =25 )
@@ -122,7 +122,7 @@ namespace MojammatApi.Controllers
             return Ok(users);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id:Guid}", Name = "GetUserById")]
         public IActionResult GetUsersById( Guid id)
         {
@@ -141,7 +141,11 @@ namespace MojammatApi.Controllers
             try
             {
 
-                
+                (bool status, Users user) res = userRepository.CheckUserIsExsit(createUserDto.phone);
+                if (res.status)
+                {
+                    return BadRequest("Phone Number Already Exist");
+                }
 
                 //TODO: validate image size and type 
 
@@ -185,7 +189,7 @@ namespace MojammatApi.Controllers
                 };
 
                 //var users = mapper.Map<Users>(createUserDto);
-
+                
                 userRepository.CreateUser(user);
                 var user_token = GenerateAccessToke(user);
                 return Ok(new
@@ -211,7 +215,7 @@ namespace MojammatApi.Controllers
            
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut( Name = "updateUsers")]
         public IActionResult UpdateUsers([FromBody] UpdateUserDto updateUserDto, [FromQuery, Required] Guid userId)
         {
@@ -224,7 +228,7 @@ namespace MojammatApi.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

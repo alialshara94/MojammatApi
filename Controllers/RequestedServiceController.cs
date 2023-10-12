@@ -12,7 +12,7 @@ namespace MojammatApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class RequestedServiceController : ControllerBase
     {
         private readonly IRequestedServiceRepository requestedServiceRepository;
@@ -60,7 +60,7 @@ namespace MojammatApi.Controllers
         }
 
 
-        [HttpGet("/byUser/{userId:Guid}", Name = "GetServiceByUserId")]
+        [HttpGet("byUser/{userId:Guid}", Name = "GetServiceByUserId")]
         public IActionResult GetServiceByUserId(Guid userId)
         {
             var service = requestedServiceRepository.GetServiceByUser(userId);

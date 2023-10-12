@@ -40,13 +40,11 @@
     <None Remove="Repositories\" />
     <None Remove="Interfaces\" />
     <None Remove="Dto\" />
-    <None Remove="Migrations\" />
     <None Remove="Dto\Visitors\" />
     <None Remove="Dto\RequestedService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Dto\Visitors\" />
   </ItemGroup>
 </Project>

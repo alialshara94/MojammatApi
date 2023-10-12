@@ -15,7 +15,7 @@ namespace MojammatApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class NotificationController : ControllerBase
     {
         private readonly INotificationRepository notificationRepository;
@@ -27,7 +27,7 @@ namespace MojammatApi.Controllers
             this.mapper = mapper;
         }
 
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateNotificatoin([FromForm] CreateNotificationDto createNotificationDto,  IHubContext<NotificationHub, INotificationHub> context)
         {
@@ -69,7 +69,7 @@ namespace MojammatApi.Controllers
             return Ok(notification);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:Guid}", Name = "DeleteNotification")]
         public IActionResult DeleteNotification(Guid id)
         {

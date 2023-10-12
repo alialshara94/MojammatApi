@@ -12,7 +12,7 @@ namespace MojammatApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class InvoiceController : ControllerBase
     {
 
@@ -24,7 +24,7 @@ namespace MojammatApi.Controllers
             this.invoiceRepository = invoiceRepository;
             this.mapper = mapper;
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetInvoices([FromQuery] string? search, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
         {
@@ -32,7 +32,7 @@ namespace MojammatApi.Controllers
             return Ok(invoices);
         }
 
-        [HttpGet("/byUser/{userId:Guid}", Name = "GetInvoiceByUserId")]
+        [HttpGet("byUser/{userId:Guid}", Name = "GetInvoiceByUserId")]
         public IActionResult GetInvoiceByUserId(Guid userId)
         {
             var invoice = invoiceRepository.GetInvoiceByUserId(userId);
@@ -55,7 +55,7 @@ namespace MojammatApi.Controllers
             }
             return Ok(invoice);
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateInvoice([FromForm] CreateInvoiceDto createInvoiceDto)
         {
@@ -64,7 +64,7 @@ namespace MojammatApi.Controllers
 
             return Ok("created invoice successfully");
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut(Name = "updateInvoice")]
         public IActionResult UpdateInvoice([FromBody] UpdateInvoiceDto updateInvoiceDto, [FromQuery, Required] Guid invoiceId)
         {
@@ -78,7 +78,7 @@ namespace MojammatApi.Controllers
                 return NotFound("The invoice is Not Found");
             }
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:Guid}", Name = "DeleteInvoice")]
         public IActionResult DeleteInvoice(Guid id)
         {
